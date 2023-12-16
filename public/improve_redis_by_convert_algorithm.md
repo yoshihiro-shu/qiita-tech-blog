@@ -32,7 +32,7 @@ RedisのCPU使用率が高負荷状態になると、インスタンスを増や
 
 ## 解決策
 
-データ圧縮アルゴリズムのGob形式から、パフォーマンスの高いアルゴリズムであるMgspack形式と〇〇を採用することで、大幅な改善に成功しました。
+データ圧縮アルゴリズムのGob形式から、パフォーマンスの高いアルゴリズムであるMgspack形式とSnappy形式を採用することで、大幅な改善に成功しました。
 
 ### 実装
 
@@ -94,6 +94,27 @@ msgpack + snappy: 7789
 ```
 
 ## リリース時の懸念
+
+::: mermaid
+sequenceDiagram
+  participant Client
+  participant Server
+  participant Redis
+  participant Postgres
+
+  Client->Server: リクエスト
+
+  Server->Redis: Redisからデータを取得
+  Redis->Server: データが存在する場合、データを返す
+  Redis->Server: データが存在しない場合、nilを返す
+
+  alt Redisからデータが存在しない場合
+    Server->Postgres: Postgresからデータを取得
+    Postgres->Server: データを返す
+  end
+
+  Server->Client: データを返す
+:::
 
 ## 結果
 
