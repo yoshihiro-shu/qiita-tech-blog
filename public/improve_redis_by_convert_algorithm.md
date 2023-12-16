@@ -1,10 +1,10 @@
 ---
-title: 4行の変更でRedisの負荷を1/3に改善した話
+title: 4行の変更でRedisの負荷を1/3改善した話
 tags:
   - Go
   - Redis
 private: false
-updated_at: '2023-12-16T21:13:38+09:00'
+updated_at: '2023-12-17T00:53:56+09:00'
 id: cfd68df9a766928743be
 organization_url_name: null
 slide: false
@@ -32,7 +32,9 @@ RedisのCPU使用率が高負荷状態になると、インスタンスを増や
 
 *別アプローチも行っており、大幅な改善が見られました。別記事にて紹介する予定です。
 
-## データ取得のフロー
+## 前提
+
+### データ取得のフロー
 
 サーバーでは、Redis->Postgressという順番で問い合わせを行っています。
 
