@@ -4,7 +4,7 @@ tags:
   - Go
   - Redis
 private: false
-updated_at: '2023-12-16T19:59:36+09:00'
+updated_at: '2023-12-16T21:13:38+09:00'
 id: cfd68df9a766928743be
 organization_url_name: null
 slide: false
@@ -14,7 +14,7 @@ ignorePublish: false
 
 現在とある金融系Webメディアを運営する会社で、主にバックエンドの開発を担当しており、フロントエンド、インフラに関する業務も担当しています。
 
-今回は、先輩エンジニアが10行ほどの変更でRedisの負荷を1/3に削減することに成功した実例をもとに記述して行きます。
+今回は、先輩エンジニアが4行の変更でRedisの負荷を1/3に削減することに成功した実例をもとに記述して行きます。
 
 - 先輩エンジニア(通称 [ichigozero](https://github.com/ichigozero))は、vimmer, hacker, rustが得意なエンジニアです。（共通の趣味（おうちKubernetes）について語り合うのが日課です。笑）
 
