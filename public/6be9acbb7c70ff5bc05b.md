@@ -7,7 +7,7 @@ tags:
   - ssr
   - Nuxt
 private: false
-updated_at: '2023-12-16T22:30:48+09:00'
+updated_at: '2023-12-16T22:35:29+09:00'
 id: 6be9acbb7c70ff5bc05b
 organization_url_name: null
 slide: false
