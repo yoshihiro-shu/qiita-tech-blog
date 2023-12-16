@@ -16,7 +16,7 @@ ignorePublish: false
 
 今回は、先輩エンジニアが10行ほどの変更でRedisの負荷を1/3に削減することに成功した実例をもとに記述して行きます。
 
-- 先輩エンジニア(通称 [ichigozero](https://github.com/ichigozero))は、vimmer, hacker, rustが得意なエンジニアです。
+- 先輩エンジニア(通称 [ichigozero](https://github.com/ichigozero))は、vimmer, hacker, rustが得意なエンジニアです。（共通の趣味（おうちKubernetes）について語り合うのが日課です。笑）
 
 ## サービスの概要
 
@@ -125,6 +125,12 @@ sequenceDiagram
 :::
 
 ## 結果
+
+リリース直後から大幅な改善が見られ、ネットワークバイト数が約1/3の改善が見られました。
+
+このことにより、
+
+![ネットワークバイト数(Out)](./network-byte-out.png)
 
 ## まとめ
 
