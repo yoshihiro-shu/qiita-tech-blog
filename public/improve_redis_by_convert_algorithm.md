@@ -36,29 +36,29 @@ RedisのCPU使用率が高負荷状態になると、インスタンスを増や
 
 ### 実装
 
-[snappy](https://github.com/golang/snappy)と[Mgspack](https://github.com/vmihailenco/msgpack)をインストールします。
+[snappy](https://github.com/golang/snappy)と[Mgspack](https://github.com/vmihailenco/msgpack)をインストール
 
 ```zsh
 go get github.com/golang/snappy \
 go get github.com/vmihailenco/msgpack/v5
 ```
 
-データ圧縮ロジックを変更します。
+データ圧縮ロジックを変更
 
 ```golang
 func serialize(value interface{}) ([]byte, error) {
-  b, err := msgpack.Marshal(value)
+  b, err := msgpack.Marshal(value) // 変更箇所
   if err != nil {
     return nil, err
   }
-  return snappy.Encode(nil, b), nil
+  return snappy.Encode(nil, b), nil // 変更箇所
 }
 func deserialize(input []byte, ptr interface{}) (err error) {
-  b, err := snappy.Decode(nil, input)
+  b, err := snappy.Decode(nil, input) // 変更箇所
   if err != nil {
     return err
   }
-  return msgpack.Unmarshal(b, ptr)
+  return msgpack.Unmarshal(b, ptr) // 変更箇所
 }
 ```
 
