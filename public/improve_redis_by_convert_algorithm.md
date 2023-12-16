@@ -35,7 +35,7 @@ RedisのCPU使用率が高負荷状態になると、インスタンスを増や
 
 サーバーでは、まずRedisに問い合わせデータが存在しないときに、DBからデータを取得し、Redisに保存するというデータ取得フローを行っております。
 
-::: mermaid
+```mermaid
 sequenceDiagram
   participant Client
   participant Server
@@ -53,7 +53,7 @@ sequenceDiagram
   end
 
   Server->Client: レスポンス
-:::
+```
 
 ## 解決策
 
