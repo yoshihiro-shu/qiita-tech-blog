@@ -117,14 +117,13 @@ sequenceDiagram
 
   Server->Redis: Redisからデータを取得
   Redis->Server: データが存在する場合、データを返す
-  Redis->Server: データが存在しない場合、nilを返す
 
   alt Redisからデータが存在しない場合
     Server->Postgres: Postgresからデータを取得
-    Postgres->Server: データを返す
+    Server->Redis: データを保存
   end
 
-  Server->Client: データを返す
+  Server->Client: レスポンス
 :::
 
 ## 結果
