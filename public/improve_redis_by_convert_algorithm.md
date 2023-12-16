@@ -103,6 +103,9 @@ func deserialize(input []byte, ptr interface{}) (err error) {
 
 ## リリース時の懸念
 
+データ圧縮アルゴリズムの違いからデプロイ中にRedisからデータを取得できず、過度にPostgresにクエリが発行されることが懸念としてあったため、ユーザー影響が少ない時間にリリースしました。
+
+データ取得のフロー
 ::: mermaid
 sequenceDiagram
   participant Client
@@ -128,7 +131,7 @@ sequenceDiagram
 
 リリース直後から大幅な改善が見られ、ネットワークバイト数が約1/3の改善されました。
 
-ピーク時にて最大約3.7Gbpsまで削減できたため、`cache.m7g.4xlarge`から`cache.m7g.2xlarge`へスペックを下げることが可能となりました。（現在経過観察中）
+ピーク時にて最大約3.7Gbpsまで削減できたため、`cache.m7g.4xlarge`から`cache.m7g.2xlarge`へと[スペック](https://aws.amazon.com/jp/elasticache/pricing/)を下げることが可能となりました。（現在経過観察中）
 
 ![ネットワークバイト数(Out)](./network-byte-out.png)
 
