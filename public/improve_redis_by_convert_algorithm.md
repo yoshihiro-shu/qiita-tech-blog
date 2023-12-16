@@ -133,6 +133,8 @@ sequenceDiagram
 
 ピーク時にて最大約3.7Gbpsまで削減できたため、`cache.m7g.4xlarge`から`cache.m7g.2xlarge`へと[スペック](https://aws.amazon.com/jp/elasticache/pricing/)を下げることが可能となりました。（現在経過観察中）
 
+以下はリリースした週のメトリクスです。
+
 ![ネットワークバイト数(Out)](./network-byte-out.png)
 
 ## まとめ
