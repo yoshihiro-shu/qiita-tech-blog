@@ -26,9 +26,34 @@ ignorePublish: false
 
 現在運用しているメディアでは約100万記事掲載しており、直近一年で約50万記事と急激に増加し、Redisのパフォーマンスが劣化する課題がありました。
 
-RedisのCPU使用率が高負荷状態になると、インスタンスを増やすなどの力技で対応するなど、イタチごっこが続いていました。
+RedisのCPU使用率が高負荷状態になると、インスタンスを増やすことで対応するなど、イタチごっこが続いていました。
 
-そこで根本的なアプローチをし、改善を行うとなったのが背景です。（*別アプローチも行っており、大幅な改善が見られました。別記事にて紹介いたします。）
+そこで根本的なアプローチをし、改善を行うとなったのが背景です。  
+（*別アプローチも行っており、大幅な改善が見られました。別記事にて紹介いたします。）
+
+## データ取得のフロー
+
+サーバーでは、まずRedisに問い合わせデータが存在しないときに、DBからデータを取得し、Redisに保存するというデータ取得フローを行っております。
+
+::: mermaid
+sequenceDiagram
+  participant Client
+  participant Server
+  participant Redis
+  participant Postgres
+
+  Client->Server: リクエスト
+
+  Server->Redis: Redisからデータを取得
+  Redis->Server: データが存在する場合、データを返す
+
+  alt Redisからデータが存在しない場合
+    Server->Postgres: Postgresからデータを取得
+    Server->Redis: データを保存
+  end
+
+  Server->Client: レスポンス
+:::
 
 ## 解決策
 
@@ -100,31 +125,6 @@ func deserialize(input []byte, ptr interface{}) (err error) {
   return msgpack.Unmarshal(b, ptr) // 変更箇所
 }
 ```
-
-## リリース時の懸念
-
-データ圧縮アルゴリズムの違いからデプロイ中にRedisからデータを取得できず、過度にPostgresにクエリが発行されることが懸念としてあったため、ユーザー影響が少ない時間にリリースしました。
-
-データ取得のフロー
-::: mermaid
-sequenceDiagram
-  participant Client
-  participant Server
-  participant Redis
-  participant Postgres
-
-  Client->Server: リクエスト
-
-  Server->Redis: Redisからデータを取得
-  Redis->Server: データが存在する場合、データを返す
-
-  alt Redisからデータが存在しない場合
-    Server->Postgres: Postgresからデータを取得
-    Server->Redis: データを保存
-  end
-
-  Server->Client: レスポンス
-:::
 
 ## 結果
 
