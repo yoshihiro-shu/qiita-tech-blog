@@ -34,37 +34,17 @@ RedisのCPU使用率が高負荷状態になると、インスタンスを増や
 
 データ圧縮アルゴリズムのGob形式から、パフォーマンスの高いアルゴリズムであるMgspack形式とSnappy形式を採用することで、大幅な改善に成功しました。
 
-### 実装
+### 採用理由
 
-[snappy](https://github.com/golang/snappy)と[Mgspack](https://github.com/vmihailenco/msgpack)をインストール
+データ圧縮のベンチマークについては、`Gob`と`Mgspack + Snappy`は同等のパフォーマンスです。
 
-```zsh
-go get github.com/golang/snappy \
-go get github.com/vmihailenco/msgpack/v5
-```
+しかしバイトサイズを比較すると`Mgspack + Snappy`が`Gob`と比べ、半分のサイズに圧縮することができています。
 
-データ圧縮ロジックを変更
-
-```golang
-func serialize(value interface{}) ([]byte, error) {
-  b, err := msgpack.Marshal(value) // 変更箇所
-  if err != nil {
-    return nil, err
-  }
-  return snappy.Encode(nil, b), nil // 変更箇所
-}
-func deserialize(input []byte, ptr interface{}) (err error) {
-  b, err := snappy.Decode(nil, input) // 変更箇所
-  if err != nil {
-    return err
-  }
-  return msgpack.Unmarshal(b, ptr) // 変更箇所
-}
-```
+結果、Redisのベンチマークを比べるとns/op(1回の操作にかかる平均時間)が約11%、B/op(1回の操作で消費する平均メモリ量)が約3%、allocs/op(1回の操作で生成される平均割り当て数)が約80%と大幅に改善したので採用しました。
 
 ### ベンチマーク
 
-データ圧縮アルゴリズムのベンチマーク
+データ圧縮のベンチマーク
 
 ```zsh
 BenchmarkJSONMarshal-12               	   45304	     25614 ns/op	   17984 B/op	      35 allocs/op
@@ -91,6 +71,34 @@ json: 14602
 gob: 13441
 msgpack: 13304
 msgpack + snappy: 7789
+```
+
+### 実装
+
+[snappy](https://github.com/golang/snappy)と[Mgspack](https://github.com/vmihailenco/msgpack)をインストール
+
+```zsh
+go get github.com/golang/snappy \
+go get github.com/vmihailenco/msgpack/v5
+```
+
+データ圧縮ロジックを変更
+
+```golang
+func serialize(value interface{}) ([]byte, error) {
+  b, err := msgpack.Marshal(value) // 変更箇所
+  if err != nil {
+    return nil, err
+  }
+  return snappy.Encode(nil, b), nil // 変更箇所
+}
+func deserialize(input []byte, ptr interface{}) (err error) {
+  b, err := snappy.Decode(nil, input) // 変更箇所
+  if err != nil {
+    return err
+  }
+  return msgpack.Unmarshal(b, ptr) // 変更箇所
+}
 ```
 
 ## リリース時の懸念
