@@ -1,5 +1,5 @@
 ---
-title: 4行の変更でRedisの負荷を1/3に改善!!!
+title: 4行の変更でRedisの負荷を1/3に改善した話
 tags:
   - Go
   - Redis
