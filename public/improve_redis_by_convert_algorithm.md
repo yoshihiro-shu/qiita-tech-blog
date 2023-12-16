@@ -1,11 +1,11 @@
 ---
 title: 4行の変更でRedisの負荷を1/3に改善!!!
 tags:
-  - 'Go'
-  - 'Redis'
+  - Go
+  - Redis
 private: false
-updated_at: ''
-id: null
+updated_at: '2023-12-16T19:59:36+09:00'
+id: cfd68df9a766928743be
 organization_url_name: null
 slide: false
 ignorePublish: false
