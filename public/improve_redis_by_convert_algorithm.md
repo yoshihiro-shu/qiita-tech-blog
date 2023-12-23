@@ -1,10 +1,10 @@
 ---
-title: 4行の変更でRedisの負荷を1/3改善した話
+title: データ圧縮アルゴリズムを変えたらRedisの負荷を1/3改善した話
 tags:
   - Go
   - Redis
 private: false
-updated_at: '2023-12-17T00:53:56+09:00'
+updated_at: '2023-12-21T23:53:14+09:00'
 id: cfd68df9a766928743be
 organization_url_name: null
 slide: false
@@ -14,7 +14,7 @@ ignorePublish: false
 
 現在とある金融系Webメディアを運営する会社で、主にバックエンドの開発を担当しており、フロントエンド、インフラに関する業務も担当しています。
 
-今回は、先輩エンジニアが4行の変更でRedisの負荷を1/3に削減することに成功した実例をもとに記述して行きます。
+今回は、先輩エンジニアがデータ圧縮アルゴリズムを変更することでRedisの負荷を1/3に削減することに成功した実例をもとに記述して行きます。
 
 - 先輩エンジニア(通称 [ichigozero](https://github.com/ichigozero))は、vimmer, hacker, rustが得意なエンジニアです。（共通の趣味（おうちKubernetes）について語り合うのが日課です。笑）
 
@@ -36,14 +36,14 @@ RedisのCPU使用率が高負荷状態になると、インスタンスを増や
 
 ### データ取得のフロー
 
-サーバーでは、Redis->Postgressという順番で問い合わせを行っています。
+サーバーでは、Redis->PostgreSQLという順番で問い合わせを行っています。
 
 ```mermaid
 sequenceDiagram
   participant Client
   participant Server
   participant Redis
-  participant Postgres
+  participant PostgreSQL
 
   Client->Server: リクエスト
 
@@ -51,7 +51,7 @@ sequenceDiagram
   Redis->Server: データが存在する場合、データを返す
 
   alt Redisからデータが存在しない場合
-    Server->Postgres: Postgresからデータを取得
+    Server->PostgreSQL: PostgreSQLからデータを取得
     Server->Redis: データを保存
   end
 
@@ -142,6 +142,6 @@ func deserialize(input []byte, ptr interface{}) (err error) {
 ## まとめ
 
 歴史的な経緯でRedisのKey設計の見直しなど以前からもパフォーマンスチューニングを行ってきました。
-しかし今回はアルゴリズムの変更を行うことで、差分が短めにも関わらず影響度が高い改善を行うことに成功しました。
+今回はアルゴリズムの変更を行うことで、差分が短めにも関わらず影響度が高い改善を行うことに成功しました。
 また、個人的にも様々な角度からアプローチすることでより強いインパクトを生み出せることを学びました。
 これからも精進して行きたいなと思います！！！
