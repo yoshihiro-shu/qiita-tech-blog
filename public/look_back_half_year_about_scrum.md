@@ -1,11 +1,11 @@
 ---
-title: 新卒二年目のエンジニアがスクラムを導入して半年程経ったのでふりかえりをしてみた
+title: なんちゃってスクラムを導入してかなり恩恵を受けたのでふりかえりをしてみた
 tags:
   - アジャイル
   - ポエム
   - スクラム
 private: false
-updated_at: '2023-12-17T02:54:55+09:00'
+updated_at: '2024-01-07T20:52:24+09:00'
 id: 540a9f5f2c17f1e0e7f6
 organization_url_name: null
 slide: false
